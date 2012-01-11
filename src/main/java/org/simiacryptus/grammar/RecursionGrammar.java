@@ -1,7 +1,5 @@
-package org.simiacryptus.grammar.test;
+package org.simiacryptus.grammar;
 
-import org.simiacryptus.grammar.Grammar;
-import org.simiacryptus.grammar.MatchResult;
 
 public class RecursionGrammar<T> extends Grammar<T>
 {

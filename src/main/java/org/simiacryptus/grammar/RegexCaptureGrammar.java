@@ -1,12 +1,10 @@
-package org.simiacryptus.grammar.test;
+package org.simiacryptus.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.simiacryptus.grammar.Grammar;
-import org.simiacryptus.grammar.MatchResult;
 
 public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
 {

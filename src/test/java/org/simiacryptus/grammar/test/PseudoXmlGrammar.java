@@ -3,6 +3,8 @@ package org.simiacryptus.grammar.test;
 import java.util.List;
 
 import org.simiacryptus.grammar.MatchResult;
+import org.simiacryptus.grammar.RecursionGrammar;
+import org.simiacryptus.grammar.RegexCaptureGrammar;
 import org.simiacryptus.grammar.SequenceGrammar;
 import org.simiacryptus.grammar.test.PseudoXmlContent.PseudoXmlTree;
 

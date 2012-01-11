@@ -7,6 +7,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.simiacryptus.grammar.MatchResult;
+import org.simiacryptus.grammar.RegexCaptureGrammar;
 import org.simiacryptus.grammar.StringRegexGrammar;
 import org.simiacryptus.grammar.test.PseudoXmlContent.PseudoXmlTree;
 
