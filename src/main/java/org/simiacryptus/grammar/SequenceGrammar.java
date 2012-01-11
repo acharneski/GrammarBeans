@@ -1,4 +1,4 @@
-package org.acharneski.grammar;
+package org.simiacryptus.grammar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class SequenceGrammar<T> extends Grammar<T>
 {
 
-  private final List<Grammar<?>> children;
+  protected final List<Grammar<?>> children;
   
   public SequenceGrammar(Grammar<?>... subgrammars)
   {
@@ -21,19 +21,26 @@ public abstract class SequenceGrammar<T> extends Grammar<T>
   }
 
   @Override
-  public MatchResult<T> matchFromStart(CharSequence string)
+  public Iterable<MatchResult<T>> matchFromStart(CharSequence string)
   {
+    ArrayList<MatchResult<T>> list = new ArrayList<MatchResult<T>>();
     int index = 0;
     List<MatchResult<?>> results = new ArrayList<MatchResult<?>>();
     for(Grammar<?> child : children)
     {
       CharSequence subSequence = string.subSequence(index, string.length());
-      MatchResult<?> matchFromStart = child.matchFromStart(subSequence);
-      assert(0 == matchFromStart.start);
-      index += matchFromStart.end;
-      results.add(matchFromStart);
+      Iterable<?> matchFromStart = child.matchFromStart(subSequence);
+      // TODO: This flow assumes this iterable is of one or zero elements
+      for(Object o : matchFromStart)
+      {
+        MatchResult<?> result = (MatchResult<?>) o;  
+        assert(0 == result.start);
+        index += result.end;
+        results.add(result);
+      }
     }
-    return new MatchResult<T>(this, string, 0, index, getResult(results));
+    list.add(new MatchResult<T>(this, string, 0, index, getResult(results)));
+    return list;
   }
 
   protected abstract T getResult(List<MatchResult<?>> results);

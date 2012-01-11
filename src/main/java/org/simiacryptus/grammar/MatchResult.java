@@ -1,4 +1,4 @@
-package org.acharneski.grammar;
+package org.simiacryptus.grammar;
 
 public class MatchResult<T>
 {
@@ -9,7 +9,7 @@ public class MatchResult<T>
   public final T result;
   public final Grammar<T> grammar;
   
-  protected MatchResult(Grammar<T> grammar, CharSequence sequence, int start, int end, T result)
+  public MatchResult(Grammar<T> grammar, CharSequence sequence, int start, int end, T result)
   {
     super();
     parent = grammar;

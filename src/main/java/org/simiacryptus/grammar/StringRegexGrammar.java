@@ -1,5 +1,6 @@
-package org.acharneski.grammar;
+package org.simiacryptus.grammar;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,17 +18,18 @@ public class StringRegexGrammar extends Grammar<CharSequence>
   }
 
   @Override
-  public MatchResult<CharSequence> matchFromStart(CharSequence string)
+  public Iterable<MatchResult<CharSequence>> matchFromStart(CharSequence string)
   {
+    ArrayList<MatchResult<CharSequence>> list = new ArrayList<MatchResult<CharSequence>>();
     Matcher matcher = startAnchoredRegex.matcher(string);
     if(matcher.find())
     {
       int start = 0;
       int end = matcher.group(0).length();
       CharSequence result = string.subSequence(start, end);
-      return new MatchResult<CharSequence>(this, string, start, end, result);
+      list.add(new MatchResult<CharSequence>(this, string, start, end, result));
     }
-    return null;
+    return list;
   }
 
 }
