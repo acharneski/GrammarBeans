@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
 {
 
-  @SuppressWarnings("unused")
   private final Pattern floatingRegex;
   private final Pattern startAnchoredRegex;
 
@@ -38,4 +37,16 @@ public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
     return list;
   }
 
+  @Override
+  public String toString()
+  {
+    StringBuilder builder = new StringBuilder();
+    builder.append("RegexCaptureGrammar [");
+    builder.append(floatingRegex);
+    builder.append("]");
+    return builder.toString();
+  }
+
+  
+  
 }

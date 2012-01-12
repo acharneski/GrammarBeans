@@ -1,38 +1,42 @@
-package org.simiacryptus.grammar.test;
+package org.simiacryptus.grammar.xml;
 
 import java.util.List;
 
 import org.simiacryptus.grammar.MatchResult;
+import org.simiacryptus.grammar.OptionalGrammar;
 import org.simiacryptus.grammar.RecursionGrammar;
 import org.simiacryptus.grammar.RegexCaptureGrammar;
 import org.simiacryptus.grammar.SequenceGrammar;
-import org.simiacryptus.grammar.test.PseudoXmlContent.PseudoXmlTree;
+import org.simiacryptus.grammar.xml.XmlContent.XmlTree;
 
-public class PseudoXmlGrammar extends SequenceGrammar<PseudoXmlTree>
+public class XmlGrammar extends SequenceGrammar<XmlTree>
 {
 
-  private static final RecursionGrammar<PseudoXmlTree> recursionPoint = new RecursionGrammar<PseudoXmlTree>();
-  public static final PseudoXmlGrammar instance = new PseudoXmlGrammar();
+  public static final XmlGrammar instance = new XmlGrammar();
   
-  private PseudoXmlGrammar()
+  @SuppressWarnings("unchecked")
+  private XmlGrammar()
   {
     super(
         new RegexCaptureGrammar("<(\\w+)>"),
-        recursionPoint,
+        new RecursionGrammar<XmlTree>(),
         new RegexCaptureGrammar("</(\\w+)>")
         );
-    recursionPoint.setInner(this);
+    ((RecursionGrammar<XmlTree>)get(1)).setInner(new OptionalGrammar<XmlTree>(this));
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected PseudoXmlTree getResult(List<MatchResult<?>> results)
+  protected XmlTree getResult(List<MatchResult<?>> results)
   {
     MatchResult<List<CharSequence>> tagMatchResult = (MatchResult<List<CharSequence>>) results.get(0);
-    PseudoXmlTree pseudoXmlTree = new PseudoXmlTree(tagMatchResult.result.get(1).toString());
+    XmlTree pseudoXmlTree = new XmlTree(tagMatchResult.result.get(1).toString());
     
-    MatchResult<PseudoXmlTree> childrenMatchResult = (MatchResult<PseudoXmlTree>) results.get(1);
-    pseudoXmlTree.content.add(childrenMatchResult.result);
+    MatchResult<XmlTree> childrenMatchResult = (MatchResult<XmlTree>) results.get(1);
+    if(null != childrenMatchResult.result)
+    {
+      pseudoXmlTree.content.add(childrenMatchResult.result);
+    }
     
     tagMatchResult = (MatchResult<List<CharSequence>>) results.get(2);
     String endNodeName = tagMatchResult.result.get(1).toString();

@@ -9,11 +9,9 @@ import org.junit.Test;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.RegexCaptureGrammar;
 import org.simiacryptus.grammar.StringRegexGrammar;
-import org.simiacryptus.grammar.test.PseudoXmlContent.PseudoXmlTree;
+import org.simiacryptus.grammar.xml.XmlGrammar;
+import org.simiacryptus.grammar.xml.XmlContent.XmlTree;
 
-/**
- * Unit test for simple App.
- */
 public class GrammarTest
 {
   @Test
@@ -54,24 +52,25 @@ public class GrammarTest
   @Test
   public void test2()
   {
-    PseudoXmlGrammar g = PseudoXmlGrammar.instance;
+    XmlGrammar g = XmlGrammar.instance;
     // Needs optional content - currently expects exactly 1 inner node (impossible recursion)
-    ArrayList<MatchResult<PseudoXmlTree>> list = toList(g.matchFromStart("<xml></xml>"));
-    PseudoXmlTree tree = list.get(0).result;
-    PseudoXmlTree expected = new PseudoXmlTree("xml");
-    expected.content.add(new PseudoXmlTree("foo"));
+    ArrayList<MatchResult<XmlTree>> list = toList(g.matchFromStart("<xml></xml>"));
+    Assert.assertEquals(1, list.size());
+    XmlTree tree = list.get(0).result;
+    XmlTree expected = new XmlTree("xml");
     Assert.assertEquals(expected, tree);
   }
   
   @Test
   public void test3()
   {
-    PseudoXmlGrammar g = PseudoXmlGrammar.instance;
+    XmlGrammar g = XmlGrammar.instance;
     // Needs optional content - currently expects exactly 1 inner node (impossible recursion)
-    ArrayList<MatchResult<PseudoXmlTree>> list = toList(g.matchFromStart("<xml><foo></foo></xml>"));
-    PseudoXmlTree tree = list.get(0).result;
-    PseudoXmlTree expected = new PseudoXmlTree("xml");
-    expected.content.add(new PseudoXmlTree("foo"));
+    ArrayList<MatchResult<XmlTree>> list = toList(g.matchFromStart("<xml><foo></foo></xml>"));
+    Assert.assertEquals(1, list.size());
+    XmlTree tree = list.get(0).result;
+    XmlTree expected = new XmlTree("xml");
+    expected.content.add(new XmlTree("foo"));
     Assert.assertEquals(expected, tree);
   }
 }

@@ -9,5 +9,4 @@ public abstract class Grammar<T>
   {
     throw new RuntimeException(String.format("Syntax Exception: %s (%s)", msg, matchResult));
   }
-
 }
