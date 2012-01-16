@@ -26,7 +26,7 @@ public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
     if(matcher.find())
     {
       List<CharSequence> result = new ArrayList<CharSequence>();
-      for(int i=0;i<matcher.groupCount()+1;i++)
+      for(int i=1;i<matcher.groupCount()+1;i++)
       {
         int start = matcher.start(i);
         int end = matcher.end(i);

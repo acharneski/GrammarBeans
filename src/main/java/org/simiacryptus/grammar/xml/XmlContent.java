@@ -45,17 +45,9 @@ public interface XmlContent
       StringBuilder builder = new StringBuilder();
       builder.append("<");
       builder.append(nodeName);
-      boolean first = true;
       for(Entry<String, String> e : attributes.entrySet())
       {
-        if(first)
-        {
-          first = false;
-        }
-        else
-        {
-          builder.append(" ");
-        }
+        builder.append(" ");
         builder.append(e.getKey());
         builder.append("=\"");
         builder.append(e.getValue());
