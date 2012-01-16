@@ -5,11 +5,21 @@ import java.util.Iterator;
 
 public class OptionalGrammar<T> extends Grammar<T>
 {
-  private final Grammar<T> inner;
+  private Grammar<T> inner;
+
+  public OptionalGrammar()
+  {
+    super();
+  }
 
   public OptionalGrammar(Grammar<T> inner)
   {
-    super();
+    this();
+    setInner(inner);
+  }
+
+  protected void setInner(Grammar<T> inner)
+  {
     this.inner = inner;
   }
 
