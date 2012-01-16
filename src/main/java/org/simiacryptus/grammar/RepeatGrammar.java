@@ -3,12 +3,24 @@ package org.simiacryptus.grammar;
 
 public abstract class RepeatGrammar<T> extends ChainGrammar<T>
 {
+  private Grammar<?> inner;
+  private int min;
+  private int max;
 
-  private final Grammar<?> inner;
-
-  public RepeatGrammar(RegexCaptureGrammar inner, int min, int max)
+  protected RepeatGrammar(RegexCaptureGrammar inner, int min, int max)
   {
-    super(min, max);
+    this(min, max);
+    setInner(inner);
+  }
+
+  protected RepeatGrammar(int min, int max)
+  {
+    this.min = min;
+    this.max = max;
+  }
+
+  protected void setInner(RegexCaptureGrammar inner)
+  {
     if(null == inner) throw new NullPointerException();
     this.inner = inner;
   }
@@ -18,6 +30,17 @@ public abstract class RepeatGrammar<T> extends ChainGrammar<T>
   {
     return inner;
   }
+
+  protected int getMin()
+  {
+    return min;
+  }
+
+  protected int getMax()
+  {
+    return max;
+  }
+
 
   @Override
   public String toString()
@@ -33,5 +56,4 @@ public abstract class RepeatGrammar<T> extends ChainGrammar<T>
     return builder.toString();
   }
 
-  
 }

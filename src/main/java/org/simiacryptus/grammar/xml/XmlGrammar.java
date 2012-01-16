@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.simiacryptus.grammar.Grammar;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.OptionalGrammar;
 import org.simiacryptus.grammar.RecursionGrammar;
@@ -18,15 +17,20 @@ import org.simiacryptus.grammar.xml.XmlContent.XmlTree;
 public class XmlGrammar extends SequenceGrammar<XmlTree>
 {
   
-  private static Grammar<?> endTag = new RegexCaptureGrammar("</(\\w+)>");
-  private static RecursionGrammar<XmlTree> recursionPoint = new RecursionGrammar<XmlTree>();
   public static final XmlGrammar instance = new XmlGrammar();
+  
+  private final StartTagGrammar startTag = new StartTagGrammar();
+  private final RecursionGrammar<XmlTree> recursionPoint = new RecursionGrammar<XmlTree>();
+  private final RegexCaptureGrammar endTag = new RegexCaptureGrammar("</(\\w+)>");
 
   private static final class AttributeGrammar extends RepeatGrammar<Map<CharSequence, CharSequence>>
   {
+    private final RegexCaptureGrammar entry = new RegexCaptureGrammar("\\s+(\\w+)=\"(.*?)\"");
+    
     private AttributeGrammar()
     {
-      super(new RegexCaptureGrammar("\\s+(\\w+)=\"(.*?)\""), 0, -1);
+      super(0, -1);
+      setInner(entry);
     }
 
     @Override
@@ -44,25 +48,27 @@ public class XmlGrammar extends SequenceGrammar<XmlTree>
 
   private static final class StartTagGrammar extends SequenceGrammar<XmlTree>
   {
-
+    private final RegexCaptureGrammar name = new RegexCaptureGrammar("<(\\w+)");
+    private final AttributeGrammar attributes = new AttributeGrammar();
+    private final RegexGrammar end = new RegexGrammar(">");
+    
     private StartTagGrammar()
     {
-      super(
-          new RegexCaptureGrammar("<(\\w+)"), 
-          new AttributeGrammar(), 
-          new RegexGrammar(">"));
+      super();
+      add(name);
+      add(attributes);
+      add(end);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected XmlTree getResult(List<MatchResult<?>> results)
     {
-      MatchResult<List<CharSequence>> tagName = (MatchResult<List<CharSequence>>) results.get(0);
+      MatchResult<List<CharSequence>> tagName = name.cast(results.get(0));
       XmlTree xmlTree = new XmlTree(tagName.result.get(0).toString());
       if(results.get(1).result instanceof Map)
       {
-        Map<CharSequence, CharSequence> attributes = (Map<CharSequence, CharSequence>) results.get(1).result;
-        for(Entry<CharSequence, CharSequence> e : attributes.entrySet())
+        Map<CharSequence, CharSequence> attributeMap = attributes.cast(results.get(1)).result;
+        for(Entry<CharSequence, CharSequence> e : attributeMap.entrySet())
         {
           xmlTree.attributes.put(e.getKey().toString(), e.getValue().toString());
         }
@@ -73,29 +79,25 @@ public class XmlGrammar extends SequenceGrammar<XmlTree>
 
   private XmlGrammar()
   {
-    super(
-        //startTag,
-        new StartTagGrammar(),
-        recursionPoint ,
-        endTag
-        );
+    super();
+    add(startTag);
+    add(recursionPoint);
+    add(endTag);
     recursionPoint.setInner(new OptionalGrammar<XmlTree>(this));
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected XmlTree getResult(List<MatchResult<?>> results)
   {
-    MatchResult<XmlTree> tagMatchResult = (MatchResult<XmlTree>) results.get(0);
-    XmlTree pseudoXmlTree = tagMatchResult.result;
+    XmlTree pseudoXmlTree = startTag.cast(results.get(0)).result;
     
-    MatchResult<XmlTree> childrenMatchResult = (MatchResult<XmlTree>) results.get(1);
+    MatchResult<XmlTree> childrenMatchResult = recursionPoint.cast(results.get(1));
     if(null != childrenMatchResult.result)
     {
       pseudoXmlTree.content.add(childrenMatchResult.result);
     }
     
-    MatchResult<List<CharSequence>> endTagMatch = (MatchResult<List<CharSequence>>) results.get(2);
+    MatchResult<List<CharSequence>> endTagMatch = endTag.cast(results.get(2));
     String endNodeName = endTagMatch.result.get(0).toString();
     if(!pseudoXmlTree.nodeName.equals(endNodeName))
     {

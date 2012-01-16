@@ -9,4 +9,10 @@ public abstract class Grammar<T>
   {
     throw new RuntimeException(String.format("Syntax Exception: %s (%s)", msg, matchResult));
   }
+  
+  @SuppressWarnings("unchecked")
+  public MatchResult<T> cast(MatchResult<?> result)
+  {
+    return (MatchResult<T>) result;
+  }
 }

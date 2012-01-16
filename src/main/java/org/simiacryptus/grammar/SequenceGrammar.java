@@ -1,29 +1,32 @@
 package org.simiacryptus.grammar;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class SequenceGrammar<T> extends ChainGrammar<T>
 {
-  protected final List<Grammar<?>> children;
+  protected final List<Grammar<?>> children = new ArrayList<Grammar<?>>();
   
-  public SequenceGrammar(Grammar<?>... subgrammars)
-  {
-    super(subgrammars.length, subgrammars.length);
-    ArrayList<Grammar<?>> list = new ArrayList<Grammar<?>>(subgrammars.length);
-    for(Grammar<?> c : subgrammars)
-    {
-      if(null == c) throw new NullPointerException();
-      list.add(c);
-    }
-    this.children = Collections.unmodifiableList(list);
-  }
-
   @Override
   public Grammar<?> get(int i)
   {
     return this.children.get(i);
+  }
+
+  protected int getMin()
+  {
+    return children.size();
+  }
+
+  protected int getMax()
+  {
+    return children.size();
+  }
+
+  protected void add(Grammar<?> regexGrammar)
+  {
+    if(null == regexGrammar) throw new NullPointerException();
+    children.add(regexGrammar);
   }
 
   @Override

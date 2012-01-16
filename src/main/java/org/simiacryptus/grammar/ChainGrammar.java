@@ -23,7 +23,7 @@ public abstract class ChainGrammar<T> extends Grammar<T>
       this.child = get(childIndex);
       this.matchIterator = child.matchFromStart(subSequence).iterator();
       this.nextChildIndex = childIndex + 1;
-      this.isTerminal = max > 0 && nextChildIndex >= max;
+      this.isTerminal = getMax() > 0 && nextChildIndex >= getMax();
     }
 
     public void remove()
@@ -93,14 +93,9 @@ public abstract class ChainGrammar<T> extends Grammar<T>
     
   }
 
-  protected final int min;
-  protected final int max;
-
-  public ChainGrammar(int min, int max)
+  protected ChainGrammar()
   {
     super();
-    this.min = min;
-    this.max = max;
   }
 
   protected abstract T getResult(List<MatchResult<?>> results);
@@ -118,7 +113,7 @@ public abstract class ChainGrammar<T> extends Grammar<T>
         {
           TailMatchIterator tailSequence = new TailMatchIterator(0, string);
           List<MatchResult<?>> next = null;
-          boolean returnNull = min == 0;
+          boolean returnNull = getMin() == 0;
           
           public boolean hasNext()
           {
@@ -150,7 +145,7 @@ public abstract class ChainGrammar<T> extends Grammar<T>
 
           private void updateNext()
           {
-            while (null == next || next.size() < min)
+            while (null == next || next.size() < getMin())
             {
               if(!tailSequence.hasNext())
               {
@@ -169,5 +164,9 @@ public abstract class ChainGrammar<T> extends Grammar<T>
       }
     };
   }
+
+  protected abstract int getMin();
+
+  protected abstract int getMax();
 
 }
