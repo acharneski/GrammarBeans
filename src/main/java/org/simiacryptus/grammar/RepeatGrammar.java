@@ -7,7 +7,7 @@ public abstract class RepeatGrammar<T> extends ChainGrammar<T>
   private int min;
   private int max;
 
-  protected RepeatGrammar(RegexCaptureGrammar inner, int min, int max)
+  protected RepeatGrammar(Grammar<?> inner, int min, int max)
   {
     this(min, max);
     setInner(inner);
@@ -19,10 +19,10 @@ public abstract class RepeatGrammar<T> extends ChainGrammar<T>
     this.max = max;
   }
 
-  protected void setInner(RegexCaptureGrammar inner)
+  protected void setInner(Grammar<?> inner2)
   {
-    if(null == inner) throw new NullPointerException();
-    this.inner = inner;
+    if(null == inner2) throw new NullPointerException();
+    this.inner = inner2;
   }
 
   @Override

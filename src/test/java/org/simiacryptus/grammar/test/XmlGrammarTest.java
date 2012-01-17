@@ -6,8 +6,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.simiacryptus.grammar.MatchResult;
-import org.simiacryptus.grammar.xml.XmlContent.XmlTree;
-import org.simiacryptus.grammar.xml.XmlGrammar;
+import org.simiacryptus.grammar.test.xml.XmlGrammar;
+import org.simiacryptus.grammar.test.xml.XmlContent.XmlTree;
 
 public class XmlGrammarTest
 {

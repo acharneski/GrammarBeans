@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 public class RegexGrammar extends Grammar<CharSequence>
 {
 
-  @SuppressWarnings("unused")
   private final Pattern floatingRegex;
   private final Pattern startAnchoredRegex;
 
@@ -32,4 +31,15 @@ public class RegexGrammar extends Grammar<CharSequence>
     return list;
   }
 
+  @Override
+  public String toString()
+  {
+    StringBuilder builder = new StringBuilder();
+    builder.append("RegexGrammar [");
+    builder.append(floatingRegex);
+    builder.append("]");
+    return builder.toString();
+  }
+
+  
 }

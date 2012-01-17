@@ -1,10 +1,10 @@
 package org.simiacryptus.grammar.test;
 
 import org.simiacryptus.grammar.Grammar;
-import org.simiacryptus.grammar.xml.XmlContent.XmlTree;
-import org.simiacryptus.grammar.xml.XmlGrammar;
+import org.simiacryptus.grammar.test.xml.XmlGrammar;
+import org.simiacryptus.grammar.test.xml.XmlContent.XmlTree;
 
-public class Xml1GrammarTest extends XmlTestBase
+public class XmlGrammarDynamicTest extends XmlTestBase
 {
   private final XmlGrammar grammar = XmlGrammar.instance;
 

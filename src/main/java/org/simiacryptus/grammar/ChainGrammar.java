@@ -127,7 +127,7 @@ public abstract class ChainGrammar<T> extends Grammar<T>
             if(returnNull)
             {
               returnNull = false;
-              return new MatchResult<T>(ChainGrammar.this, string, 0, 0, null);
+              return new MatchResult<T>(ChainGrammar.this, string, 0, 0, getNullResult());
             }
             updateNext();
             T result = getResult(next);
@@ -163,6 +163,12 @@ public abstract class ChainGrammar<T> extends Grammar<T>
         };
       }
     };
+  }
+
+  protected T getNullResult()
+  {
+    T nullResult = null;
+    return nullResult;
   }
 
   protected abstract int getMin();
