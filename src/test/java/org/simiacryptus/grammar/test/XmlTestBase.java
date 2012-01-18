@@ -6,6 +6,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.simiacryptus.grammar.Grammar;
+import org.simiacryptus.grammar.Log;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.test.xml.XmlContent.XmlTree;
 
@@ -69,9 +70,12 @@ public abstract class XmlTestBase
   protected void test(XmlTree expected)
   {
     Grammar<XmlTree> grammar = getGrammar();
+    Log.debug("Testing xml %s against grammar: %s", expected, grammar);
     ArrayList<MatchResult<XmlTree>> list = toList(grammar.matchFromStart(expected.toString()));
     Assert.assertEquals(1, list.size());
-    XmlTree tree = list.get(0).result;
+    MatchResult<XmlTree> match = list.get(0);
+    Log.debug("Matched %s", match);
+    XmlTree tree = match.result;
     Assert.assertEquals(expected, tree);
   }
 

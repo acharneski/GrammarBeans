@@ -1,6 +1,7 @@
 package org.simiacryptus.grammar.bean;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,10 @@ public class GrammarBean
         assert(0 < declaredFields.length);
         for(Field field : declaredFields)
         {
+          if(0 != (field.getModifiers() & Modifier.STATIC))
+          {
+            continue;
+          }
           grammar.add(FieldGrammar.get(field));
         }
         return grammar;

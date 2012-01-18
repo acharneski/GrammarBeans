@@ -1,6 +1,5 @@
 package org.simiacryptus.grammar.bean.impl;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.simiacryptus.grammar.Grammar;
@@ -19,35 +18,13 @@ public class RegexCaptureAdapter extends Grammar<CharSequence>
   @Override
   public Iterable<MatchResult<CharSequence>> matchFromStart(final CharSequence charSequence)
   {
-    return new Iterable<MatchResult<CharSequence>>()
+    return new IterableAdapter<MatchResult<List<CharSequence>>, MatchResult<CharSequence>>(innerGrammar.matchFromStart(charSequence))
     {
       @Override
-      public Iterator<MatchResult<CharSequence>> iterator()
+      protected MatchResult<CharSequence> convert(MatchResult<List<CharSequence>> next)
       {
-        return new Iterator<MatchResult<CharSequence>>()
-        {
-          Iterator<MatchResult<List<CharSequence>>> iterator = innerGrammar.matchFromStart(charSequence).iterator();
-
-          @Override
-          public void remove()
-          {
-            iterator.remove();
-          }
-          
-          @Override
-          public MatchResult<CharSequence> next()
-          {
-            MatchResult<List<CharSequence>> next = iterator.next();
-            CharSequence value = next.result.get(0);
-            return new MatchResult<CharSequence>(RegexCaptureAdapter.this, charSequence, next.start, next.end, value);
-          }
-          
-          @Override
-          public boolean hasNext()
-          {
-            return iterator.hasNext();
-          }
-        };
+        CharSequence value = next.result.get(0);
+        return new MatchResult<CharSequence>(RegexCaptureAdapter.this, charSequence, next.start, next.end, value);
       }
     };
   }
@@ -61,6 +38,5 @@ public class RegexCaptureAdapter extends Grammar<CharSequence>
     builder.append("]");
     return builder.toString();
   }
-  
-  
+
 }

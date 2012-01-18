@@ -21,8 +21,7 @@ public abstract class IterableAdapter<F,T> implements Iterable<T>
       @Override
       public void remove()
       {
-        // TODO Auto-generated method stub
-        
+        throw new RuntimeException("Unsupported Operation");
       }
       
       @Override
@@ -34,8 +33,7 @@ public abstract class IterableAdapter<F,T> implements Iterable<T>
       @Override
       public boolean hasNext()
       {
-        // TODO Auto-generated method stub
-        return false;
+        return iterator.hasNext();
       }
     };
   }

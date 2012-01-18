@@ -1,6 +1,7 @@
 package org.simiacryptus.grammar.test.xml;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class TestObj
 {
@@ -42,6 +43,7 @@ public class TestObj
     {
       for (Field f : this.getClass().getDeclaredFields())
       {
+        if(0 != (f.getModifiers() & Modifier.TRANSIENT)) continue;
         Object a = f.get(this);
         Object b = f.get(obj);
         final boolean equal;
