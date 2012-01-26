@@ -7,6 +7,19 @@ public abstract class SequenceGrammar<T> extends ChainGrammar<T>
 {
   protected final List<Grammar<?>> children = new ArrayList<Grammar<?>>();
   
+  public SequenceGrammar(Class<? super T> resultType)
+  {
+    super(resultType);
+  }
+
+  public SequenceGrammar(Class<? super T> resultType, Grammar<?>... children)
+  {
+    this(resultType);
+    for(Grammar<?> c : children){
+      add(c);
+    }
+  }
+  
   @Override
   public Grammar<?> get(int i)
   {
@@ -44,7 +57,7 @@ public abstract class SequenceGrammar<T> extends ChainGrammar<T>
       else
       {
         builder.append(", ");
-      }
+      } 
       builder.append(child);
     }
     builder.append("]");

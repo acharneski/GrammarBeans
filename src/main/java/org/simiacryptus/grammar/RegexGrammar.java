@@ -12,6 +12,7 @@ public class RegexGrammar extends Grammar<CharSequence>
 
   public RegexGrammar(String pattern)
   {
+    super(CharSequence.class);
     this.floatingRegex = Pattern.compile(pattern);
     this.startAnchoredRegex = Pattern.compile("^" + pattern);
   }
@@ -41,5 +42,16 @@ public class RegexGrammar extends Grammar<CharSequence>
     return builder.toString();
   }
 
+  @Override
+  public String write(JavaFile file)
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append("new ");
+    sb.append(getType());
+    sb.append("(\"");
+    sb.append(StringUtil.escapeStringLiteral(floatingRegex.toString()));
+    sb.append("\")");
+    return sb.toString();
+  }
   
 }

@@ -49,9 +49,15 @@ public class ChoiceGrammar<T> extends Grammar<T>
 
   private final List<Grammar<T>> list = new ArrayList<Grammar<T>>();
   
-  @SuppressWarnings("unchecked")
-  public ChoiceGrammar(@SuppressWarnings("rawtypes") Grammar... grammars)
+  public ChoiceGrammar(Class<? super T> resultType)
   {
+    super(resultType);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public ChoiceGrammar(Grammar<? extends T>... grammars)
+  {
+    this((Class<? super T>) grammars[0].resultType);
     for(Grammar<?> g : grammars)
     {
       add((Grammar<T>) g);
@@ -74,6 +80,39 @@ public class ChoiceGrammar<T> extends Grammar<T>
         return new ChoiceIterator(charSequence);
       }
     };
+  }
+
+  @Override
+  public String write(JavaFile file)
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append("new ");
+    sb.append(getType());
+    sb.append("(");
+    if(0 == list.size())
+    {
+      sb.append(resultType.getSimpleName());
+      sb.append(".class");
+    }
+    else
+    {
+      boolean isFirst = true;
+      for(Grammar<?> c : list)
+      {
+        if(isFirst)
+        {
+          isFirst = false;
+        }
+        else
+        {
+          sb.append(",");
+        }
+        String var = file.newVar(c);
+        sb.append(var);
+      }
+    }
+    sb.append(")");
+    return sb.toString();
   }
 
 }

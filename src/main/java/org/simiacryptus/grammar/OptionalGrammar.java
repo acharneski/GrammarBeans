@@ -7,14 +7,14 @@ public class OptionalGrammar<T> extends Grammar<T>
 {
   private Grammar<T> inner;
 
-  public OptionalGrammar()
+  public OptionalGrammar(Class<? super T> resultType)
   {
-    super();
+    super(resultType);
   }
 
   public OptionalGrammar(Grammar<T> inner)
   {
-    this();
+    this(inner.resultType);
     setInner(inner);
   }
 
@@ -61,6 +61,16 @@ public class OptionalGrammar<T> extends Grammar<T>
   public Grammar<T> getInner()
   {
     return inner;
+  }
+
+  @Override
+  public String write(JavaFile file)
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append("new OptionalGrammar(");
+    sb.append(file.newVar(inner));
+    sb.append(")");
+    return sb.toString();
   }
 
 }

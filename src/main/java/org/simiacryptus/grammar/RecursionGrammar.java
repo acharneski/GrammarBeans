@@ -5,7 +5,18 @@ package org.simiacryptus.grammar;
 public class RecursionGrammar<T> extends Grammar<T>
 {
   private Grammar<T> inner = null;
-  
+
+  public RecursionGrammar(Class<? super T> resultType)
+  {
+    super(resultType);
+  }
+
+  public RecursionGrammar(Grammar<T> inner)
+  {
+    this(inner.resultType);
+    this.inner = inner;
+  }
+
   @Override
   public Iterable<MatchResult<T>> matchFromStart(CharSequence charSequence)
   {
@@ -40,6 +51,25 @@ public class RecursionGrammar<T> extends Grammar<T>
       insideToString = false;
     }
     return builder.toString();
+  }
+
+  @Override
+  public String write(JavaFile file)
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append("new ");
+    sb.append(getType());
+    sb.append("(");
+    if (null == inner)
+    {
+      sb.append(resultType.getCanonicalName() + ".class");
+    }
+    else
+    {
+      sb.append(file.newVar(inner));
+    }
+    sb.append(")");
+    return sb.toString();
   }
 
 }

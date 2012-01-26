@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.simiacryptus.grammar.Grammar;
+import org.simiacryptus.grammar.JavaFile;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.RegexCaptureGrammar;
 import org.simiacryptus.grammar.RepeatGrammar;
@@ -12,7 +14,12 @@ public final class MapEntriesAdapter extends RepeatGrammar<Map<CharSequence, Cha
 {
   public MapEntriesAdapter(String pattern)
   {
-    super(new RegexCaptureGrammar(pattern), 0, -1);
+    this(new RegexCaptureGrammar(pattern));
+  }
+
+  public MapEntriesAdapter(Grammar<List<CharSequence>> inner)
+  {
+    super(Map.class, inner, 0, -1);
   }
 
   @SuppressWarnings("unchecked")
@@ -33,6 +40,15 @@ public final class MapEntriesAdapter extends RepeatGrammar<Map<CharSequence, Cha
   {
     return new HashMap<CharSequence, CharSequence>();
   }
-  
+
+  @Override
+  public String write(JavaFile file)
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append("new MapEntriesAdapter(");
+    sb.append(file.newVar(inner));
+    sb.append(")");
+    return sb.toString();
+  }
   
 }

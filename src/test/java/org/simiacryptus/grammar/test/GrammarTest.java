@@ -23,7 +23,7 @@ public class GrammarTest
     return list;
   }
 
-  @Test
+  @Test()
   public void test1()
   {
     RegexGrammar grammar = new RegexGrammar("ca\\w");

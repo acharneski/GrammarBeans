@@ -93,9 +93,9 @@ public abstract class ChainGrammar<T> extends Grammar<T>
     
   }
 
-  protected ChainGrammar()
+  public ChainGrammar(Class<? super T> resultType)
   {
-    super();
+    super(resultType);
   }
 
   protected abstract T getResult(List<MatchResult<?>> results);

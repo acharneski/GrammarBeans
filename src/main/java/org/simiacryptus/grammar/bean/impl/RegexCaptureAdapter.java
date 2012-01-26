@@ -3,6 +3,7 @@ package org.simiacryptus.grammar.bean.impl;
 import java.util.List;
 
 import org.simiacryptus.grammar.Grammar;
+import org.simiacryptus.grammar.JavaFile;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.RegexCaptureGrammar;
 
@@ -12,6 +13,7 @@ public class RegexCaptureAdapter extends Grammar<CharSequence>
 
   public RegexCaptureAdapter(RegexCaptureGrammar innerGrammar)
   {
+    super(CharSequence.class);
     this.innerGrammar = innerGrammar;
   }
 
@@ -37,6 +39,16 @@ public class RegexCaptureAdapter extends Grammar<CharSequence>
     builder.append(innerGrammar);
     builder.append("]");
     return builder.toString();
+  }
+
+  @Override
+  public String write(JavaFile file)
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append("new RegexCaptureAdapter(");
+    sb.append(file.newVar(innerGrammar));
+    sb.append(")");
+    return sb.toString();
   }
 
 }

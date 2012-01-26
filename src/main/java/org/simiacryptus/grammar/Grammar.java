@@ -1,7 +1,15 @@
 package org.simiacryptus.grammar;
 
-public abstract class Grammar<T>
+public abstract class Grammar<T> implements JavaGenerator
 {
+
+  public final Class<? super T> resultType;
+  
+  public Grammar(Class<? super T> resultType)
+  {
+    super();
+    this.resultType = resultType;
+  }
 
   public abstract Iterable<MatchResult<T>> matchFromStart(CharSequence charSequence);
 
@@ -15,4 +23,24 @@ public abstract class Grammar<T>
   {
     return (MatchResult<T>) result;
   }
+  
+  @Override
+  public String write(JavaFile file)
+  {
+    throw new RuntimeException("Not Implemented");
+  }
+
+  @Override
+  public String getType()
+  {
+    if(0 == this.getClass().getTypeParameters().length)
+    {
+      return this.getClass().getSimpleName();
+    }
+    else
+    {
+      return this.getClass().getSimpleName() + "<" + resultType.getCanonicalName() + ">";
+    }
+  }
+
 }

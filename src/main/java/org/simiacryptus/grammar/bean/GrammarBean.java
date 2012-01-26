@@ -28,7 +28,7 @@ public class GrammarBean
       Subclasses annotation_subclass = class1.getAnnotation(Subclasses.class);
       if(null != annotation_subclass)
       {
-        ChoiceGrammar<T> grammar = new ChoiceGrammar<T>();
+        ChoiceGrammar<T> grammar = new ChoiceGrammar<T>(class1);
         grammarMap.put(class1, grammar);
         for(Class<?> g : annotation_subclass.value())
         {

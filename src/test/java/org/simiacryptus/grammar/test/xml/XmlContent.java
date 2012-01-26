@@ -16,9 +16,9 @@ public interface XmlContent
   public static class XmlContentText extends TestObj implements XmlContent
   {
     @Regex("[^<]+")
-    public final CharSequence string;
+    public CharSequence string;
 
-    protected XmlContentText()
+    public XmlContentText()
     {
       this("");
     }
@@ -39,20 +39,21 @@ public interface XmlContent
   public class XmlTree extends TestObj implements XmlContent
   {
     @Regex(capture = true, value = "<(\\w+)")
-    public final CharSequence nodeName;
+    public CharSequence nodeName;
 
     @Entries("\\s+(\\w+)=\"(.*?)\"")
-    public final Map<CharSequence, CharSequence> attributes = new HashMap<CharSequence, CharSequence>();
+    public Map<CharSequence, CharSequence> attributes = new HashMap<CharSequence, CharSequence>();
 
     @Regex(">")
-    protected transient CharSequence terminateStartNode = "";
+    public
+    transient CharSequence terminateStartNode = "";
 
-    public final List<XmlContent> content = new ArrayList<XmlContent>();
+    public List<XmlContent> content = new ArrayList<XmlContent>();
 
     @Regex(capture = true, value = "</(\\w+)>")
-    protected final CharSequence endNode;
+    public CharSequence endNode;
 
-    protected XmlTree()
+    public XmlTree()
     {
       this("");
     }

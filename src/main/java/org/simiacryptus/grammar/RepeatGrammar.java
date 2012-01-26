@@ -3,18 +3,19 @@ package org.simiacryptus.grammar;
 
 public abstract class RepeatGrammar<T> extends ChainGrammar<T>
 {
-  private Grammar<?> inner;
-  private int min;
-  private int max;
+  protected Grammar<?> inner;
+  protected int min;
+  protected int max;
 
-  protected RepeatGrammar(Grammar<?> inner, int min, int max)
+  protected RepeatGrammar(Class<? super T> resultType, Grammar<?> inner, int min, int max)
   {
-    this(min, max);
+    this(resultType, min, max);
     setInner(inner);
   }
 
-  protected RepeatGrammar(int min, int max)
+  protected RepeatGrammar(Class<? super T> resultType, int min, int max)
   {
+    super(resultType);
     this.min = min;
     this.max = max;
   }

@@ -20,16 +20,16 @@ public class XmlGrammar extends SequenceGrammar<XmlTree>
   public static final XmlGrammar instance = new XmlGrammar();
   
   private final StartTagGrammar startTag = new StartTagGrammar();
-  private final RecursionGrammar<XmlTree> recursionPoint = new RecursionGrammar<XmlTree>();
+  private final RecursionGrammar<XmlTree> recursionPoint = new RecursionGrammar<XmlTree>(XmlTree.class);
   private final RegexCaptureGrammar endTag = new RegexCaptureGrammar("</(\\w+)>");
 
-  private static final class AttributeGrammar extends RepeatGrammar<Map<CharSequence, CharSequence>>
+  public static final class AttributeGrammar extends RepeatGrammar<Map<CharSequence, CharSequence>>
   {
     private final RegexCaptureGrammar entry = new RegexCaptureGrammar("\\s+(\\w+)=\"(.*?)\"");
     
     private AttributeGrammar()
     {
-      super(0, -1);
+      super(Map.class, 0, -1);
       setInner(entry);
     }
 
@@ -44,6 +44,7 @@ public class XmlGrammar extends SequenceGrammar<XmlTree>
       }
       return map;
     }
+    
   }
 
   private static final class StartTagGrammar extends SequenceGrammar<XmlTree>
@@ -54,7 +55,7 @@ public class XmlGrammar extends SequenceGrammar<XmlTree>
     
     private StartTagGrammar()
     {
-      super();
+      super(XmlTree.class);
       add(name);
       add(attributes);
       add(end);
@@ -79,7 +80,7 @@ public class XmlGrammar extends SequenceGrammar<XmlTree>
 
   private XmlGrammar()
   {
-    super();
+    super(XmlTree.class);
     add(startTag);
     add(recursionPoint);
     add(endTag);

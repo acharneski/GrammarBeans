@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
 {
 
@@ -14,6 +13,7 @@ public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
 
   public RegexCaptureGrammar(String pattern)
   {
+    super(List.class);
     this.floatingRegex = Pattern.compile(pattern);
     this.startAnchoredRegex = Pattern.compile("^" + pattern);
   }
@@ -47,6 +47,16 @@ public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
     return builder.toString();
   }
 
-  
-  
+  @Override
+  public String write(JavaFile file)
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append("new ");
+    sb.append(getType());
+    sb.append("(\"");
+    sb.append(StringUtil.escapeStringLiteral(floatingRegex.toString()));
+    sb.append("\")");
+    return sb.toString();
+  }
+
 }
