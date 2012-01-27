@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.simiacryptus.grammar.Grammar;
-import org.simiacryptus.grammar.JavaFile;
+import org.simiacryptus.grammar.JavaValue;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.RegexCaptureGrammar;
 import org.simiacryptus.grammar.RepeatGrammar;
@@ -42,13 +42,15 @@ public final class MapEntriesAdapter extends RepeatGrammar<Map<CharSequence, Cha
   }
 
   @Override
-  public String write(JavaFile file)
+  public JavaValue getCode(JavaValue parent)
   {
+    JavaValue file = new JavaValue(parent, getTypeString());
     StringBuffer sb = new StringBuffer();
     sb.append("new MapEntriesAdapter(");
     sb.append(file.newVar(inner));
     sb.append(")");
-    return sb.toString();
+    file.setValueString(sb.toString());
+    return file;
   }
   
 }

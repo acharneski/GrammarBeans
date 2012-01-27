@@ -83,11 +83,12 @@ public class ChoiceGrammar<T> extends Grammar<T>
   }
 
   @Override
-  public String write(JavaFile file)
+  public JavaValue getCode(JavaValue parent)
   {
+    JavaValue file = new JavaValue(parent, getTypeString());
     StringBuffer sb = new StringBuffer();
     sb.append("new ");
-    sb.append(getType());
+    sb.append(getTypeString());
     sb.append("(");
     if(0 == list.size())
     {
@@ -112,7 +113,8 @@ public class ChoiceGrammar<T> extends Grammar<T>
       }
     }
     sb.append(")");
-    return sb.toString();
+    file.setValueString(sb.toString());
+    return file;
   }
 
 }

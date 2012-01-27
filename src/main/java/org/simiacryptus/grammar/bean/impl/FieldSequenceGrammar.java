@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.simiacryptus.grammar.Grammar;
-import org.simiacryptus.grammar.JavaFile;
+import org.simiacryptus.grammar.JavaValue;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.RecursionGrammar;
 import org.simiacryptus.grammar.SequenceGrammar;
@@ -47,11 +47,13 @@ public class FieldSequenceGrammar<T> extends SequenceGrammar<T>
   }
   
   @Override
-  public String write(JavaFile file)
+  public JavaValue getCode(JavaValue parent)
   {
+    JavaValue file = new JavaValue(parent, getTypeString());
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    String recursionVar = file.newVar(new RecursionGrammar(resultType));
-    file.cache.put(this, recursionVar);
+    RecursionGrammar recursionValue = new RecursionGrammar(resultType);
+    String recursionVar = file.newVar(recursionValue);
+    file.alias(recursionValue, this);
 
     StringBuffer sb = new StringBuffer();
     sb.append("new ");
@@ -84,11 +86,12 @@ public class FieldSequenceGrammar<T> extends SequenceGrammar<T>
     sb.append("  }\n");
     sb.append("}");
     file.add(String.format("%s.setInner(%s);", recursionVar, sb.toString()));
-    return sb.toString();
+    file.setValueString(sb.toString());
+    return file;
   }
 
   @Override
-  public String getType()
+  public String getTypeString()
   {
     return "SequenceGrammar<" + resultType.getCanonicalName() + ">";
   }

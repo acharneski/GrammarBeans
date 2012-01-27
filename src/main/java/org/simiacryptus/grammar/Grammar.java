@@ -1,6 +1,6 @@
 package org.simiacryptus.grammar;
 
-public abstract class Grammar<T> implements JavaGenerator
+public abstract class Grammar<T> implements CodeGenerator
 {
 
   public final Class<? super T> resultType;
@@ -11,6 +11,9 @@ public abstract class Grammar<T> implements JavaGenerator
     this.resultType = resultType;
   }
 
+  /* (non-Javadoc)
+   * @see org.simiacryptus.grammar.CodeGenerator#matchFromStart(java.lang.CharSequence)
+   */
   public abstract Iterable<MatchResult<T>> matchFromStart(CharSequence charSequence);
 
   protected void logSyntaxException(String msg, MatchResult<?> matchResult)
@@ -24,14 +27,16 @@ public abstract class Grammar<T> implements JavaGenerator
     return (MatchResult<T>) result;
   }
   
+  /* (non-Javadoc)
+   * @see org.simiacryptus.grammar.CodeGenerator#getCode(org.simiacryptus.grammar.JavaValue)
+   */
   @Override
-  public String write(JavaFile file)
+  public JavaValue getCode(JavaValue parent)
   {
     throw new RuntimeException("Not Implemented");
   }
 
-  @Override
-  public String getType()
+  public String getTypeString()
   {
     if(0 == this.getClass().getTypeParameters().length)
     {

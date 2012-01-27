@@ -1,7 +1,5 @@
 package org.simiacryptus.grammar;
 
-
-
 public class RecursionGrammar<T> extends Grammar<T>
 {
   private Grammar<T> inner = null;
@@ -30,19 +28,20 @@ public class RecursionGrammar<T> extends Grammar<T>
 
   public synchronized void setInner(Grammar<T> inner)
   {
-    if(null != this.inner) throw new RuntimeException("inner instance already set");
+    if (null != this.inner)
+      throw new RuntimeException("inner instance already set");
     this.inner = inner;
   }
 
   boolean insideToString = false;
-  
+
   @Override
   public synchronized String toString()
   {
     StringBuilder builder = new StringBuilder();
     builder.append("RecursionGrammar@");
     builder.append(Integer.toHexString(System.identityHashCode(this)));
-    if(!insideToString)
+    if (!insideToString)
     {
       insideToString = true;
       builder.append(" [inner=");
@@ -54,11 +53,12 @@ public class RecursionGrammar<T> extends Grammar<T>
   }
 
   @Override
-  public String write(JavaFile file)
+  public JavaValue getCode(JavaValue parent)
   {
+    JavaValue file = new JavaValue(parent, getTypeString());
     StringBuffer sb = new StringBuffer();
     sb.append("new ");
-    sb.append(getType());
+    sb.append(getTypeString());
     sb.append("(");
     if (null == inner)
     {
@@ -69,7 +69,8 @@ public class RecursionGrammar<T> extends Grammar<T>
       sb.append(file.newVar(inner));
     }
     sb.append(")");
-    return sb.toString();
+    file.setValueString(sb.toString());
+    return file;
   }
 
 }

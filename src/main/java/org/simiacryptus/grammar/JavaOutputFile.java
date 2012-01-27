@@ -4,17 +4,22 @@ import java.io.File;
 
 public class JavaOutputFile
 {
-  public File baseDir;
-  public String className;
+  public final File baseDir;
+  public final String className;
+  public final String packageName;
 
-  public JavaOutputFile(File baseDir, String className)
+  public JavaOutputFile(File baseDir, String className, String packageName)
   {
     this.baseDir = baseDir;
     this.className = className;
+    this.packageName = packageName;
   }
 
   public File getFile()
   {
-    return new File(baseDir, className + ".java");
+    String packagePath = packageName.replaceAll("\\.", "/");
+    File packageDir = new File(baseDir, packagePath);
+    packageDir.mkdirs();
+    return new File(packageDir, className + ".java");
   }
 }

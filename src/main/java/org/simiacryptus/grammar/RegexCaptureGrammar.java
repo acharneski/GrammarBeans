@@ -48,15 +48,17 @@ public class RegexCaptureGrammar extends Grammar<List<CharSequence>>
   }
 
   @Override
-  public String write(JavaFile file)
+  public JavaValue getCode(JavaValue parent)
   {
+    JavaValue file = new JavaValue(parent, getTypeString());
     StringBuffer sb = new StringBuffer();
     sb.append("new ");
-    sb.append(getType());
+    sb.append(getTypeString());
     sb.append("(\"");
     sb.append(StringUtil.escapeStringLiteral(floatingRegex.toString()));
     sb.append("\")");
-    return sb.toString();
+    file.setValueString(sb.toString());
+    return file;
   }
 
 }

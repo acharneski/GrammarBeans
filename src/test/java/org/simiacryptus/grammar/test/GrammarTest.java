@@ -53,6 +53,7 @@ public class GrammarTest
   @Test
   public void test4()
   {
+    @SuppressWarnings("unchecked")
     ChoiceGrammar<CharSequence> grammar = new ChoiceGrammar<CharSequence>(new RegexGrammar("dog"), new RegexGrammar("cat"));
     ArrayList<MatchResult<CharSequence>> list = toList(grammar.matchFromStart("catdog"));
     Assert.assertEquals(1, list.size());

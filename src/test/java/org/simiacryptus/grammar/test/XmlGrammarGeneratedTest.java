@@ -2,11 +2,11 @@ package org.simiacryptus.grammar.test;
 
 import org.simiacryptus.grammar.Grammar;
 import org.simiacryptus.grammar.test.xml.XmlContent.XmlTree;
-import org.simiacryptus.grammar.test.xml.XmlGrammar;
+import org.simiacryptus.grammar.test.xml.generated.GeneratedGrammar;
 
-public class XmlGrammarDynamicTest extends XmlTestBase
+public class XmlGrammarGeneratedTest extends XmlTestBase
 {
-  private final XmlGrammar grammar = XmlGrammar.instance;
+  private final Grammar<XmlTree> grammar = GeneratedGrammar.get();
 
   @Override
   protected Grammar<XmlTree> getGrammar()

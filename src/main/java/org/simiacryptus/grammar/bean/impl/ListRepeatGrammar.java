@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.simiacryptus.grammar.Grammar;
-import org.simiacryptus.grammar.JavaFile;
+import org.simiacryptus.grammar.JavaValue;
 import org.simiacryptus.grammar.MatchResult;
 import org.simiacryptus.grammar.RepeatGrammar;
 
@@ -35,11 +35,12 @@ public class ListRepeatGrammar<T> extends RepeatGrammar<List<T>>
   }
 
   @Override
-  public String write(JavaFile file)
+  public JavaValue getCode(JavaValue parent)
   {
+    JavaValue file = new JavaValue(parent, getTypeString());
     StringBuffer sb = new StringBuffer();
     sb.append("new ");
-    sb.append(getType());
+    sb.append(getTypeString());
     sb.append("(");
     sb.append(file.newVar(inner));
     sb.append(",");
@@ -47,7 +48,8 @@ public class ListRepeatGrammar<T> extends RepeatGrammar<List<T>>
     sb.append(",");
     sb.append(max);
     sb.append(")");
-    return sb.toString();
+    file.setValueString(sb.toString());
+    return file;
   }
   
 }
